@@ -1,0 +1,30 @@
+.mainPanel {
+    max-width: var(--max-width);
+    width: 100%;
+    font-family: var(--font-family);
+    margin-top: 2rem;
+    text-align: center;
+    color: var(--text-color);
+}
+
+.mainPanel button {
+    color: var(--text-color);
+}
+
+@media(max-width: 345px) {
+    .mainPanel {
+        margin-top: 4rem;
+    }
+}
+
+@media(max-width: 330px) {
+    .mainPanel {
+        margin-top: 6rem;
+    }
+}
+
+@media(max-width: 325px) {
+    .mainPanel {
+        margin-top: 8rem;
+    }
+}

@@ -1,0 +1,17 @@
+.header {
+    max-height: 150px;
+}
+
+.headerText {
+    text-align: center;
+    font-family: Roboto Bold;
+    color: var(--text-color);
+}
+
+@media (max-width: 793px) {
+    .header {
+        justify-content: center;
+        text-align: center;
+        word-break: break-word;
+    }
+}
