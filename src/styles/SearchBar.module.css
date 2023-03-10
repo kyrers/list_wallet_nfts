@@ -1,0 +1,34 @@
+.searchBar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    height: 3rem;
+}
+
+.searchBar input {
+    flex: 1 1 auto;
+    text-align: center;
+    font-size: 18px;
+    border-radius: var(--buton-border);
+    background: var(--card-hover-background);
+    color: white;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    transition: all 0.3s ease 0s;
+}
+
+.searchBar button {
+    width: 15rem;
+    font-size: 20px;
+    font-weight: bold;
+    padding: 0.5rem;
+    background: var(--button-color);
+    border: none;
+    border-radius: var(--buton-border);
+    color: black;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.searchBar button:hover {
+    background: var(--button-hover-color);
+}
