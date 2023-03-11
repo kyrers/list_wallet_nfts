@@ -4,6 +4,7 @@
   align-items: center;
   padding: 3rem 6rem 3rem 6rem;
   min-height: 100vh;
+  justify-content: space-between;
 }
 
 /*.main {

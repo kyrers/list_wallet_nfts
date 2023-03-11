@@ -1,64 +1,39 @@
-import { getNftImageUrl, getNftName } from "@/utils/common";
-import { DEFAULT_ERROR_IMAGE } from "@/utils/constants";
-import { useEvmWalletNFTs } from "@moralisweb3/next";
-import Moralis from "moralis/.";
+import useNftInfo from "@/hooks/useNftInfo";
+import { noNftsToDisplayText, searchBarInputErrorText } from "@/utils/strings";
 import { useEffect, useState } from "react";
 import styles from "../styles/MainPanel.module.css";
 import LoadingScreen from "./LoadingScreen";
+import NFTCards from "./NFTCards";
 import SearchBar from "./SearchBar";
 
 export default function MainPanel() {
     const [address, setAddress] = useState<string>("");
-    //const [isLoading, setIsLoading] = useState<boolean>(false);
-    const [displayData, setDisplayData] = useState<any[]>([]);
+    const [isLoading, setIsLoading] = useState<boolean>(false);
+    const [inputError, setInputError] = useState<boolean>(false);
 
-    const { data: nftData, isFetching } = useEvmWalletNFTs({ address: address });
-
-   /* useEffect(() => {
-        setIsLoading(true)
-    }, [address])*/
+    const { nftData, hasNoData, isDecoding, isError: errorLoadingNfts } = useNftInfo(address);
 
     useEffect(() => {
-        console.log(nftData)
-        if (nftData && nftData?.length > 0) {
-            setDisplayData(nftData.map((nft: any) => ({
-                name: getNftName(nft),
-                image: getNftImageUrl(nft),
-                tokenId: nft.tokenId
-            })));
+        if (!isDecoding) {
+            setIsLoading(false);
         }
-    }, [nftData])
-    console.log(displayData);
-
-    const renderCards = () => {
-
-        return (
-            displayData?.map(nft =>
-                <div key={`${nft.name}-#${nft.tokenId}`} className={styles.card}>
-                    <div className={styles.cardHeader}>
-                        <img src={nft.image} onError={(e) => e.currentTarget.src = DEFAULT_ERROR_IMAGE} />
-                    </div>
-
-                    <div className={styles.cardBody}>
-                        <h2 title={nft.name}>{nft.name}</h2>
-                        <span title={`#${nft.tokenId}`}>#{nft.tokenId}</span>
-                    </div>
-                </div>
-            )
-        );
-    }
+    }, [isDecoding]);
 
     return (
         <div className={styles.mainPanel}>
-            <SearchBar setAddress={setAddress}/>
-            <div className={styles.grid}>
-                {
-                    isFetching ?
-                        <LoadingScreen />
+            <SearchBar address={address} setAddress={setAddress} setInputError={setInputError} setIsLoading={setIsLoading} />
+            {
+                isLoading || isDecoding ?
+                    <LoadingScreen />
+                    :
+                    inputError ?
+                        <span className={styles.errorSpan}>{searchBarInputErrorText}</span>
                         :
-                        renderCards()
-                }
-            </div>
+                        hasNoData ?
+                            <span className={styles.noNfts}>{noNftsToDisplayText}</span>
+                            :
+                            <NFTCards displayData={nftData!} />
+            }
         </div>
     );
 }

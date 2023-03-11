@@ -1,4 +1,5 @@
 .mainPanel {
+    flex: 1 1 auto;
     max-width: var(--max-width);
     width: 100%;
     font-family: var(--font-family);
@@ -7,109 +8,11 @@
     color: var(--text-color);
 }
 
-.mainPanel button {
-    color: var(--text-color);
-}
-
-.grid {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(20%, auto));
-    width: var(--max-width);
-    max-width: 100%;
-}
-
-.card {
-    display: flex;
-    flex-direction: column;
-    margin: 1rem;
-    border-radius: var(--border-radius);
-    background: var(--card-background);
-    cursor: pointer;
-}
-
-.cardHeader {
-    border-top-right-radius: var(--border-radius);
-    border-top-left-radius: var(--border-radius);
-    height: 12rem;
-    overflow: hidden;
-}
-
-.cardHeader img {
-    height: 100%;
-    width: 100%;
-    object-fit: cover;
-}
-
-.cardBody {
-    height: 6rem;
-    padding: 1rem;
-    text-align: initial;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
-.cardBody h2 {
-    font-family: Roboto Bold;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
-}
-
-/* Enable hover only on non-touch devices */
-@media (hover: hover) and (pointer: fine) {
-    .card:hover {
-        background: var(--card-hover-background);
-    }
-
-    .card:hover span {
-        transform: translateX(4px);
-    }
-}
-
-@media (prefers-reduced-motion) {
-    .thirteen::before {
-        animation: none;
-    }
-
-    .card:hover span {
-        transform: none;
-    }
-}
-
-/* Mobile */
-@media (max-width: 700px) {
-    .grid {
-        grid-template-columns: 1fr;
-        margin-bottom: 120px;
-        max-width: 320px;
-        text-align: center;
-    }
-
-    .card {
-        padding: 1rem 2.5rem;
-    }
-
-    .card h2 {
-        margin-bottom: 0.5rem;
-    }
-}
-
-/* Tablet and Smaller Desktop */
-@media (min-width: 701px) and (max-width: 1120px) {
-    .grid {
-        grid-template-columns: repeat(2, 50%);
-    }
-}
-
-@keyframes rotate {
-    from {
-        transform: rotate(360deg);
-    }
-
-    to {
-        transform: rotate(0deg);
-    }
+.noNfts, 
+.errorSpan {
+    font-size: 20px;
+    display: block;
+    padding: 2rem;
 }
 
 @media(max-width: 345px) {
