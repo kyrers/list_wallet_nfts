@@ -21,7 +21,7 @@ export default function NFTDetail({ selectedNft, setSelectedNft }: FunctionProps
                         selectedNft.image.endsWith(".mp4") ?
                             <video src={selectedNft.image} />
                             :
-                            <img src={selectedNft.image} onError={(e) => e.currentTarget.src = DEFAULT_ERROR_IMAGE} />
+                            <img alt={selectedNft.name} src={selectedNft.image} onError={(e) => e.currentTarget.src = DEFAULT_ERROR_IMAGE} />
                     }
                 </div>
                 <div className={styles.nftInfo}>

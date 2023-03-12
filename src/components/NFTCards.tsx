@@ -20,7 +20,7 @@ export default function NFTCards({ displayData, setSelectedNft }: FunctionProps)
                             nft.image.endsWith(".mp4") ?
                                 <video src={nft.image} />
                                 :
-                                <img src={nft.image} onError={(e) => e.currentTarget.src = DEFAULT_ERROR_IMAGE} />
+                                <img alt={nft.name} src={nft.image} onError={(e) => e.currentTarget.src = DEFAULT_ERROR_IMAGE} />
                         }
                     </div>
 
