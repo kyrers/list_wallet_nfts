@@ -15,20 +15,8 @@
     padding: 2rem;
 }
 
-@media(max-width: 345px) {
+@media(max-width: 500px) {
     .mainPanel {
-        margin-top: 4rem;
-    }
-}
-
-@media(max-width: 330px) {
-    .mainPanel {
-        margin-top: 6rem;
-    }
-}
-
-@media(max-width: 325px) {
-    .mainPanel {
-        margin-top: 8rem;
+        margin-top: 1rem;
     }
 }

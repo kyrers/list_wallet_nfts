@@ -24,7 +24,7 @@ export default function SearchBar({ address, setAddress, setIsLoading, setInputE
                 setIsLoading(true); 
                 setAddress(input);
             }
-        } else if (input.endsWith(".eth")) {
+        } else if (input.toLowerCase().endsWith(".eth")) {
             //If it is an ENS name, resolve it
             const provider = new ethers.AlchemyProvider("mainnet", process.env.NEXT_PUBLIC_ALCHEMY_MAINNET_API_KEY);
             const address = await provider.resolveName(input);
