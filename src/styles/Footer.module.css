@@ -5,6 +5,7 @@
 .footer svg {
     cursor: pointer;
     margin-left: 1rem;
+    color: var(--footer-svg-fill)
 }
 
 @media(max-width: 500px) {

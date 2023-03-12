@@ -1,0 +1,43 @@
+.nftDetailModal {
+    background: var(--bs-body-color);
+    color: var(--text-color);
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+}
+
+.modalTitle {
+    font-family: Roboto Bold;
+}
+
+.modalBody {
+    display: flex;
+    flex-direction: column;
+}
+
+.modalBody img {
+    width: 100%;
+    object-fit: contain;
+}
+
+.modalBody p {
+    word-wrap: break-word;
+}
+
+.nftInfo {
+    padding: 10px;
+}
+
+.modalFooter {
+    justify-content: center;
+}
+
+.modalFooter button {
+    background: var(--button-color);
+    border: none;
+    border-radius: var(--buton-border);
+    cursor: pointer;
+    color: black
+}
+
+.modalFooter button:hover {
+    background: var(--button-hover-color);
+}

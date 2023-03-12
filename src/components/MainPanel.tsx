@@ -4,12 +4,14 @@ import { useEffect, useState } from "react";
 import styles from "../styles/MainPanel.module.css";
 import LoadingScreen from "./LoadingScreen";
 import NFTCards from "./NFTCards";
+import NFTDetail from "./NFTDetail";
 import SearchBar from "./SearchBar";
 
 export default function MainPanel() {
     const [address, setAddress] = useState<string>("");
     const [isLoading, setIsLoading] = useState<boolean>(false);
     const [inputError, setInputError] = useState<boolean>(false);
+    const [selectedNft, setSelectedNft] = useState<any>(undefined)
 
     const { nftData, hasNoData, isDecoding, isError: errorLoadingNfts } = useNftInfo(address);
 
@@ -32,7 +34,16 @@ export default function MainPanel() {
                         hasNoData ?
                             <span className={styles.noNfts}>{noNftsToDisplayText}</span>
                             :
-                            <NFTCards displayData={nftData!} />
+                            <>
+                                <NFTCards displayData={nftData!} setSelectedNft={setSelectedNft} />
+
+                                {
+                                    selectedNft ?
+                                        <NFTDetail selectedNft={selectedNft} setSelectedNft={setSelectedNft} />
+                                        : null
+                                }
+                            </>
+
             }
         </div>
     );

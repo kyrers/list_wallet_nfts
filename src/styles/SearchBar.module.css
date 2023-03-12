@@ -16,19 +16,3 @@
     transition: all 0.3s ease 0s;
 }
 
-.searchBar button {
-    width: 15rem;
-    font-size: 20px;
-    font-weight: bold;
-    padding: 0.5rem;
-    background: var(--button-color);
-    border: none;
-    border-radius: var(--buton-border);
-    color: black;
-    cursor: pointer;
-    margin-left: 5px;
-}
-
-.searchBar button:hover {
-    background: var(--button-hover-color);
-}

@@ -1,37 +1,46 @@
-import { getNftImageUrl, getNftName } from "@/utils/common";
+import { getAddressUrl, getNftImageUrl, getNftName, getOpenseaUrl } from "@/utils/common";
 import { useEvmWalletNFTs } from "@moralisweb3/next";
-import { Contract } from "ethers";
 import { useEffect, useState } from "react";
 
 type NftInfo = {
-    contractName: string;
-    contractAddress: string;
-    contractABI: any;
-    contractType: number; //-1 proxy, 0 undefined, 1 ERC20, 2 ERC721, 3 ERC1155
-    contract: Contract | undefined;
-    logsEmitted: any[];
-    decodedEvents: any[];
+    name: string,
+    image: string,
+    tokenId: string,
+    ownerUrl: string,
+    owner: string,
+    contractUrl: string,
+    contract: string
+    description: string
 }
 
 export default function useNftInfo(address: any) {
     const [hasNoData, setHasNoData] = useState<boolean>(false);
     const [isDecoding, setIsDecoding] = useState<boolean>(false);
-    const [nftData, setNftData] = useState<any[]>();
+    const [nftData, setNftData] = useState<NftInfo[]>();
     const { data, isFetching, error: isError } = useEvmWalletNFTs({ address: address });
 
     useEffect(() => {
         setIsDecoding(true);
         setNftData([]);
-        
+
         if (!isFetching) {
             if (data) {
                 if (data?.length > 0) {
-                    setNftData(data.map((nft: any) => ({
-                        name: getNftName(nft),
-                        image: getNftImageUrl(nft),
-                        tokenId: nft.tokenId
-                    }
-                    )));
+                    setNftData(
+                        data.map(
+                            (nft: any) => ({
+                                name: getNftName(nft),
+                                image: getNftImageUrl(nft),
+                                tokenId: nft.tokenId,
+                                ownerUrl: `${getAddressUrl()}${nft.ownerOf.checksum}`,
+                                owner: nft.ownerOf.checksum,//formatBytes(nft.ownerOf.checksum),
+                                contractUrl: `${getAddressUrl()}${nft.tokenAddress.checksum}`,
+                                contract: nft.tokenAddress.checksum,//formatBytes(nft.tokenAddress.checksum),
+                                openseaUrl: `${getOpenseaUrl()}${nft.tokenAddress.checksum}/${nft.tokenId}`,
+                                description: nft.metadata?.description ?? ""
+                            })
+                        )
+                    );
 
                     setHasNoData(false);
                 } else {

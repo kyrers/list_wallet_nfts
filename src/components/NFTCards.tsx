@@ -1,11 +1,20 @@
 import { DEFAULT_ERROR_IMAGE } from "@/utils/constants";
+import { Dispatch, SetStateAction } from "react";
 import styles from "../styles/NFTCards.module.css";
 
-export default function NFTCards({ displayData }: { displayData: any[] }) {
+type FunctionProps = {
+    displayData: any[];
+    setSelectedNft: Dispatch<SetStateAction<any>>;
+}
+
+export default function NFTCards({ displayData, setSelectedNft }: FunctionProps) {
     const renderCards = () => {
         return (
             displayData?.map(nft =>
-                <div key={`${nft.name}-#${nft.tokenId}`} className={styles.card}>
+                <div key={`${nft.name}-#${nft.tokenId}`} className={styles.card} onClick={() => {
+                    setSelectedNft(nft)
+                }
+                }>
                     <div className={styles.cardHeader}>
                         {
                             nft.image.endsWith(".mp4") ?
