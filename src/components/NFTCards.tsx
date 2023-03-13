@@ -1,4 +1,4 @@
-import { DEFAULT_ERROR_IMAGE } from "@/utils/constants";
+import { DEFAULT_ERROR_IMAGE, PLACEHOLDER_IMAGE } from "@/utils/constants";
 import { Dispatch, SetStateAction, useState } from "react";
 import Image from "next/image";
 import styles from "../styles/NFTCards.module.css";
@@ -17,8 +17,8 @@ export default function NFTCards({ displayData, setSelectedNft }: NFTCardsProps)
     return (
         <div className={styles.grid}>
             {
-                displayData?.map(nft =>
-                    <NFTCard key={`${nft.name}-#${nft.tokenId}`} nft={nft} setSelectedNft={setSelectedNft} />
+                displayData?.map((nft, index) =>
+                    <NFTCard key={`${index}-${nft.name}-#${nft.tokenId}`} nft={nft} setSelectedNft={setSelectedNft} />
                 )
             }
         </div>
@@ -39,6 +39,7 @@ function NFTCard({ nft, setSelectedNft }: CardProps) {
                             <video
                                 key={nft.image}
                                 src={nft.image}
+                                poster={PLACEHOLDER_IMAGE}
                                 onLoadedData={(result) => {
                                     let target = result.target as HTMLVideoElement
                                     if (target.duration === 0) {
@@ -57,6 +58,8 @@ function NFTCard({ nft, setSelectedNft }: CardProps) {
                                 height={200}
                                 alt={nft.name}
                                 src={nft.image}
+                                placeholder="blur"
+                                blurDataURL={PLACEHOLDER_IMAGE}
                                 onError={() => {
                                     setImageError(true)
                                 }}
@@ -66,7 +69,7 @@ function NFTCard({ nft, setSelectedNft }: CardProps) {
                                     }
                                 }}
                                 loading="eager"
-                                priority
+                                priority={true}
                             />
                 }
             </div>

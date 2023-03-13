@@ -1,4 +1,4 @@
-import { DEFAULT_ERROR_IMAGE } from "@/utils/constants";
+import { DEFAULT_ERROR_IMAGE, PLACEHOLDER_IMAGE } from "@/utils/constants";
 import { Dispatch, SetStateAction, useState } from "react";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "react-bootstrap";
 import Image from "next/image";
@@ -26,6 +26,7 @@ export default function NFTDetail({ selectedNft, setSelectedNft }: FunctionProps
                             selectedNft.image.endsWith(".mp4") ?
                                 <video
                                     src={selectedNft.image}
+                                    poster={PLACEHOLDER_IMAGE}
                                     onLoadedData={(result) => {
                                         const target = result.target as HTMLVideoElement
                                         if (target.duration === 0) {
@@ -43,6 +44,8 @@ export default function NFTDetail({ selectedNft, setSelectedNft }: FunctionProps
                                     height={200}
                                     alt={selectedNft.name}
                                     src={selectedNft.image}
+                                    placeholder="blur"
+                                    blurDataURL={PLACEHOLDER_IMAGE}
                                     onError={() => {
                                         setImageError(true)
                                     }}
