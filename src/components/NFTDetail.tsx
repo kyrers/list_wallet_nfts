@@ -1,6 +1,7 @@
 import { DEFAULT_ERROR_IMAGE } from "@/utils/constants";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 import { Button, Modal, ModalBody, ModalFooter, ModalHeader } from "react-bootstrap";
+import Image from "next/image";
 import styles from "../styles/NFTDetail.module.css";
 
 type FunctionProps = {
@@ -9,19 +10,49 @@ type FunctionProps = {
 }
 
 export default function NFTDetail({ selectedNft, setSelectedNft }: FunctionProps) {
+    const [imageError, setImageError] = useState<boolean>(false);
+
     return (
         <Modal show={selectedNft} contentClassName={styles.nftDetailModal} onHide={() => setSelectedNft(undefined)} scrollable centered>
-
             <ModalHeader>
                 <Modal.Title className={styles.modalTitle}>{selectedNft.name}</Modal.Title>
             </ModalHeader>
             <ModalBody className={styles.modalBody}>
                 <div>
                     {
-                        selectedNft.image.endsWith(".mp4") ?
-                            <video src={selectedNft.image} />
+                        imageError ?
+                            <Image width={200} height={200} alt={"Invalid Image Metadata"} src={DEFAULT_ERROR_IMAGE} priority />
                             :
-                            <img alt={selectedNft.name} src={selectedNft.image} onError={(e) => e.currentTarget.src = DEFAULT_ERROR_IMAGE} />
+                            selectedNft.image.endsWith(".mp4") ?
+                                <video
+                                    src={selectedNft.image}
+                                    onLoadedData={(result) => {
+                                        const target = result.target as HTMLVideoElement
+                                        if (target.duration === 0) {
+                                            setImageError(true)
+                                        }
+                                    }}
+                                    autoPlay
+                                    loop
+                                />
+                                :
+                                //Both onError and onLoadingComplete are used because there are multiple reported instances of onError not being called everytime
+                                <Image
+                                    width={200}
+                                    height={200}
+                                    alt={selectedNft.name}
+                                    src={selectedNft.image}
+                                    onError={() => {
+                                        setImageError(true)
+                                    }}
+                                    onLoadingComplete={(result) => {
+                                        if (result.width === 0) {
+                                            setImageError(true)
+                                        }
+                                    }}
+                                    loading="eager"
+                                    priority
+                                />
                     }
                 </div>
                 <div className={styles.nftInfo}>
@@ -48,5 +79,4 @@ export default function NFTDetail({ selectedNft, setSelectedNft }: FunctionProps
             </ModalFooter>
         </Modal>
     );
-
-}
+};

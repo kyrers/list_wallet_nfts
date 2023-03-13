@@ -33,9 +33,9 @@ export default function useNftInfo(address: any) {
                                 image: getNftImageUrl(nft),
                                 tokenId: nft.tokenId,
                                 ownerUrl: `${getAddressUrl()}${nft.ownerOf.checksum}`,
-                                owner: nft.ownerOf.checksum,//formatBytes(nft.ownerOf.checksum),
+                                owner: nft.ownerOf.checksum,
                                 contractUrl: `${getAddressUrl()}${nft.tokenAddress.checksum}`,
-                                contract: nft.tokenAddress.checksum,//formatBytes(nft.tokenAddress.checksum),
+                                contract: nft.tokenAddress.checksum,
                                 openseaUrl: `${getOpenseaUrl()}${nft.tokenAddress.checksum}/${nft.tokenId}`,
                                 description: nft.metadata?.description ?? ""
                             })
@@ -48,6 +48,7 @@ export default function useNftInfo(address: any) {
                 }
             }
         }
+
         setIsDecoding(false);
     }, [isFetching]);
 

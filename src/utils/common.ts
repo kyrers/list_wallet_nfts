@@ -1,9 +1,12 @@
+
+import { DEFAULT_ERROR_IMAGE } from "./constants";
+
 export const getNftName = (nft: any) => {
     return nft.metadata?.name ? nft.metadata?.name : nft.name;
 };
 
 export const getNftImageUrl = (nft: any) => {
-    let url = nft.metadata?.image_url ?? nft.metadata?.image ?? "";
+    let url = nft.metadata?.image_url ?? nft.metadata?.image ?? DEFAULT_ERROR_IMAGE;
 
 
     //If it is an ipfs stored image, we modify the link to use moralis to get the image
@@ -31,8 +34,8 @@ export const getNftImageUrl = (nft: any) => {
 
 export const getAddressUrl = () => {
     return process.env.NEXT_PUBLIC_ETHERSCAN_ADDRESS_URL;
-}
+};
 
 export const getOpenseaUrl = () => {
     return process.env.NEXT_PUBLIC_OPENSEA_URL;
-}
+};
