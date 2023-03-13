@@ -23,10 +23,9 @@ export default function NFTDetail({ selectedNft, setSelectedNft }: FunctionProps
                         imageError ?
                             <Image width={200} height={200} alt={"Invalid Image Metadata"} src={DEFAULT_ERROR_IMAGE} priority />
                             :
-                            selectedNft.image.endsWith(".mp4") ?
+                            selectedNft.mediaType === "mp4" ?
                                 <video
                                     src={selectedNft.image}
-                                    poster={PLACEHOLDER_IMAGE}
                                     onLoadedData={(result) => {
                                         const target = result.target as HTMLVideoElement
                                         if (target.duration === 0) {

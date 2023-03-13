@@ -35,7 +35,7 @@ function NFTCard({ nft, setSelectedNft }: CardProps) {
                     imageError ?
                         <Image width={200} height={200} alt={"Invalid Image Metadata"} src={DEFAULT_ERROR_IMAGE} priority />
                         :
-                        nft.image.endsWith(".mp4") ?
+                        nft.mediaType === "mp4" ?
                             <video
                                 key={nft.image}
                                 src={nft.image}

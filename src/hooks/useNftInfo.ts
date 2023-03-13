@@ -1,10 +1,11 @@
-import { getAddressUrl, getNftImageUrl, getNftName, getOpenseaUrl } from "@/utils/common";
-import { useEvmWalletNFTs } from "@moralisweb3/next";
-import { useEffect, useState } from "react";
+import { getAddressUrl, getImageUrl, getNftName, getOpenseaUrl } from "@/utils/common";
+import { useState } from "react";
+import useSWR from "swr";
 
 type NftInfo = {
     name: string,
     image: string,
+    mediaType: string,
     tokenId: string,
     ownerUrl: string,
     owner: string,
@@ -17,28 +18,45 @@ export default function useNftInfo(address: any) {
     const [hasNoData, setHasNoData] = useState<boolean>(false);
     const [isDecoding, setIsDecoding] = useState<boolean>(false);
     const [nftData, setNftData] = useState<NftInfo[]>();
-    const { data, isFetching, error: isError } = useEvmWalletNFTs({ address: address });
 
-    useEffect(() => {
-        setIsDecoding(true);
-        setNftData([]);
+    const fetcher = (...args: [any]) => {
+        if (address && "" !== address) {
+            setIsDecoding(true)
+            return fetch(...args)
+                .then((res) => res.json())
+                .then((data) => decodeData(data));
+        }
 
-        if (!isFetching) {
+        return undefined;
+    }
+
+    const { error, isLoading } = useSWR(`api/alchemy?address=${address}`, fetcher, {
+        revalidateIfStale: false,
+        revalidateOnFocus: false,
+        revalidateOnReconnect: false
+    });
+
+
+    const decodeData = (data: any) => {
+        try {
             if (data) {
                 if (data?.length > 0) {
                     setNftData(
                         data.map(
-                            (nft: any) => ({
-                                name: getNftName(nft),
-                                image: getNftImageUrl(nft),
-                                tokenId: nft.tokenId,
-                                ownerUrl: `${getAddressUrl()}${nft.ownerOf.checksum}`,
-                                owner: nft.ownerOf.checksum,
-                                contractUrl: `${getAddressUrl()}${nft.tokenAddress.checksum}`,
-                                contract: nft.tokenAddress.checksum,
-                                openseaUrl: `${getOpenseaUrl()}${nft.tokenAddress.checksum}/${nft.tokenId}`,
-                                description: nft.metadata?.description ?? ""
-                            })
+                            (nft: any) => {
+                                return ({
+                                    name: getNftName(nft),
+                                    image: getImageUrl(nft),
+                                    mediaType: nft.media[0]?.format ?? "png",
+                                    tokenId: nft.tokenId,
+                                    ownerUrl: `${getAddressUrl()}${address}`,
+                                    owner: address,
+                                    contractUrl: `${getAddressUrl()}${nft.contract.address}`,
+                                    contract: nft.contract?.name ?? nft.contract.address,
+                                    openseaUrl: `${getOpenseaUrl()}${nft.contract.address}/${nft.tokenId}`,
+                                    description: nft.description ?? ""
+                                })
+                            }
                         )
                     );
 
@@ -47,15 +65,17 @@ export default function useNftInfo(address: any) {
                     setHasNoData(true);
                 }
             }
-        }
 
-        setIsDecoding(false);
-    }, [isFetching]);
+            setIsDecoding(false);
+        } catch (_) {
+            setIsDecoding(false);
+        }
+    }
 
     return {
         nftData,
         hasNoData,
-        isDecoding: isFetching || isDecoding,
-        isError
+        isDecoding: isLoading || isDecoding,
+        isError: error
     };
 };
