@@ -34,6 +34,7 @@ export default function NFTDetail({ selectedNft, setSelectedNft }: FunctionProps
                                     }}
                                     autoPlay
                                     loop
+                                    controls
                                 />
                                 :
                                 //Both onError and onLoadingComplete are used because there are multiple reported instances of onError not being called everytime
